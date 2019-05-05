@@ -1,26 +1,20 @@
 package ghosts;
 
 import pacman.*;
+import util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TheGhost1 extends MasterGhostManager {
-
-    private boolean firstSpawn = true;
+public class TheGhost1 extends GhostPlayer {
 
     @Override
     public Move chooseMove(Game game, int ghostIndex) {
 
-        if (firstSpawn) {
-            ghosts.add(ghostIndex);
-            firstSpawn = false;
-        }
-
         Location pacman = game.getCurrentState().getPacManLocation();
         List<Move> legalPacmanMoves = game.getLegalPacManMoves();
 
-        List<Location> tpLocations = new ArrayList<>();
+        List<Pair<Location, Move>> tpLocations = new ArrayList<>();
         for (Move m : legalPacmanMoves){
             Location tp = null;
             switch (m) {
@@ -39,16 +33,14 @@ public class TheGhost1 extends MasterGhostManager {
                     tp = new Location(pacman.getX() + 1, pacman.getY());
                     break;
             }
-            tpLocations.add(tp);
+            tpLocations.add(new Pair<>(tp, m.getOpposite()));
         }
 
-        for (int i = 0; i < ghosts.size(); i++){
-            game.getCurrentState().getGhostLocations().set(i, tpLocations.get(i % tpLocations.size()));
-        }
+        game.getCurrentState().getGhostLocations().set(ghostIndex, tpLocations.get(ghostIndex % tpLocations.size()).first);
 
+        return tpLocations.get(ghostIndex % tpLocations.size()).second;
         //State state = new State(game.getCurrentState().getPacManLocation(), locations, game.getCurrentState().getDotLocations(), game.getCurrentState().getPreviousGhostMoves(), game.getCurrentState());
         //game.setCurrentState(state);
 
-        return Move.NONE;
     }
 }
