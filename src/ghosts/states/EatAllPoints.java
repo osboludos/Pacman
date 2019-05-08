@@ -29,7 +29,7 @@ public class EatAllPoints  implements State<HungryGhost> {
     @Override
     public Move Run(Game game, int ghost, HungryGhost ghostType) {
 
-        if (game.getCurrentState().getGhostLocations().get(ghost) == m_currentTarget){
+        if (game.getCurrentState().getGhostLocations().get(ghost).equals(m_currentTarget)){
             if (m_currentTarget == m_target1){
                 m_currentTarget = m_target2;
             }

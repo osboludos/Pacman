@@ -27,8 +27,6 @@ public class HungryGhost extends GhostPlayer {
     @Override
     public Move chooseMove(Game game, int ghostIndex) {
 
-        System.out.println("Pacman:" + game.getCurrentState().getPacManLocation());
-
         if (m_firstTime){
             m_stateMachine.SetCurrentState(new EatAllPoints(), game, ghostIndex);
             m_firstTime = false;

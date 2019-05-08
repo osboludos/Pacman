@@ -18,24 +18,28 @@ public class GhostHelper {
 
         List<Move> legalMoves = GetLegalGhostMoves(s, ghostIndex);
 
-        //System.out.println(legalMoves.size());
+        System.out.println(legalMoves);
+
+
         Map<Move, Double> scores = new HashMap<>();
 
-        for (Move m : legalMoves) {
 
+        for (Move m : legalMoves) {
+            if (m.equals(Move.NONE)){
+                continue;
+            }
             List<State> stateList = ProjectGhostLocation(s, m, ghostIndex);
 
             State last = stateList.get(stateList.size() - 1);
 
-            //System.out.println("posição:" + last.getGhostLocations().get(ghostIndex));
-            //System.out.println("Target:" + target);
-
             double dist = EvaluateState(last, ghostIndex, target);
-            //System.out.print(m);
-            //System.out.println(dist);
 
             scores.put(m, dist);
 
+        }
+
+        if (scores.isEmpty()){
+            return Move.NONE;
         }
 
         double minScore = Double.MAX_VALUE;
